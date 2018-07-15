@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.IntStream;
 
 class Rank {
 
@@ -34,16 +36,16 @@ class Rank {
     }
 
     private static String getWinner(Integer[] winningNumbers, HashMap<Integer, List<String>> winningNumToNameMap, int n) {
+        List<String> allNames = new ArrayList<>();
         Arrays.sort(winningNumbers, Collections.reverseOrder());
 
-        List<String> winners = winningNumToNameMap.get(winningNumbers[n - 1]);
+        for(Integer num : winningNumbers) {
+            List<String> names = winningNumToNameMap.get(num);
+            Collections.sort(names);
+            allNames.addAll(names);
+        }
 
-        System.out.println("WINNERS PRE SORT : " + Arrays.toString(winners.toArray()));
-
-        Collections.sort(winners);
-        System.out.println("WINNERS POST SORT : " + Arrays.toString(winners.toArray()));
-
-        return winners.get(0);
+        return allNames.get(n-1);
     }
 
     private static HashMap<Integer, List<String>> getNumToNameMap(String[] names, Integer[] winningNumbers) {
